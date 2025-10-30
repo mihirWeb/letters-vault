@@ -77,7 +77,7 @@ export default function VaultPage() {
     'https://res.cloudinary.com/dbsqtk1r7/image/upload/v1761488982/photo_2025-10-26_19-56-38_jvlvza.jpg';
 
   return (
-    <div className="relative h-[500px] w-screen overflow-hidden">
+    <div className="relative h-screen w-screen overflow-hidden">
       {/* Background layer (fills full viewport) */}
       <div
         className="absolute inset-0"
@@ -91,7 +91,9 @@ export default function VaultPage() {
           width: '100vw',
         }}
       />
+      <div className="relative z-10">
       <Meteors />
+      </div>
     </div>
   );
 }
