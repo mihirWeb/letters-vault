@@ -2,12 +2,17 @@
 
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { Meteors } from '@/components/ui/meteors';
+import { ComicText } from '@/components/ui/comic-text';
 
 export default function VaultPage() {
   const router = useRouter();
+  const [currentText, setCurrentText] = useState('Hey!!');
+  const [showText, setShowText] = useState(true);
+  const [showCurvedText, setShowCurvedText] = useState(false);
+  const [showFinalText, setShowFinalText] = useState(false);
 
   const handleLogout = () => {
     Cookies.remove('auth_user');
@@ -15,6 +20,7 @@ export default function VaultPage() {
   };
 
   useEffect(() => {
+    // Fireworks effect
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
@@ -67,6 +73,32 @@ export default function VaultPage() {
 
     sideCannonsFrame();
 
+    // Text animation sequence
+    const textSequence = () => {
+      // Show "Hey!!" for 2 seconds
+      setTimeout(() => {
+        setShowText(false);
+        
+        // After a brief pause, show "it's your birthday" in curved path
+        setTimeout(() => {
+          setCurrentText("it's your birthday");
+          setShowCurvedText(true);
+          
+          // After 3 seconds, hide curved text and show "Happy Birthday!! :)"
+          setTimeout(() => {
+            setShowCurvedText(false);
+            
+            setTimeout(() => {
+              setCurrentText("Happy Birthday!! :)");
+              setShowFinalText(true);
+            }, 500);
+          }, 3000);
+        }, 500);
+      }, 2000);
+    };
+
+    textSequence();
+
     return () => {
       clearInterval(fireworksInterval);
       if (rafId) cancelAnimationFrame(rafId);
@@ -91,8 +123,91 @@ export default function VaultPage() {
           width: '100vw',
         }}
       />
+      
+      {/* Meteors layer */}
       <div className="relative z-10">
-      <Meteors />
+        <Meteors />
+      </div>
+      
+      {/* Comic Text layer for "Hey!!" */}
+      <div className="absolute inset-0 flex items-center justify-center z-20">
+        {showText && currentText === 'Hey!!' && (
+          <ComicText 
+            fontSize={8}
+            className="text-white font-bold"
+          >
+            {currentText}
+          </ComicText>
+        )}
+      </div>
+
+      {/* Curved Comic Text for "it's your birthday" */}
+      {showCurvedText && (
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <div className="relative w-full max-w-4xl h-64">
+            <svg 
+              width="100%" 
+              height="100%" 
+              viewBox="0 0 800 200"
+              className="comic-curved-text"
+            >
+              {/* Define the curved path */}
+              <defs>
+                <path
+                  id="curvePath"
+                  d="M 100,150 C 200,50 600,50 700,150"
+                  fill="transparent"
+                />
+                {/* Comic-style filter for the text */}
+                <filter id="comicEffect" x="-20%" y="-20%" width="140%" height="140%">
+                  <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
+                  <feFlood floodColor="black" result="blackColor" />
+                  <feComposite in="blackColor" in2="thicken" operator="in" result="outline" />
+                  <feMerge>
+                    <feMergeNode in="outline" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              {/* Text following the curved path with comic effect */}
+              <text 
+                fill="white" 
+                fontFamily="'Comic Sans MS', 'Comic Neue', cursive, sans-serif"
+                fontSize="52"
+                fontWeight="bold"
+                textAnchor="middle"
+                filter="url(#comicEffect)"
+                style={{
+                  paintOrder: 'stroke fill',
+                  stroke: 'black',
+                  strokeWidth: '4px',
+                  strokeLinejoin: 'round'
+                }}
+              >
+                <textPath 
+                  href="#curvePath" 
+                  startOffset="50%"
+                  className="drop-shadow-2xl"
+                >
+                  it's your birthday!!!
+                </textPath>
+              </text>
+            </svg>
+          </div>
+        </div>
+      )}
+
+      {/* Comic Text layer for "Happy Birthday!! :)" */}
+      <div className="absolute inset-0 flex items-center justify-center z-20">
+        {showFinalText && (
+          <ComicText 
+            fontSize={8}
+            className="text-white font-bold"
+          >
+            {currentText}
+          </ComicText>
+        )}
       </div>
     </div>
   );
