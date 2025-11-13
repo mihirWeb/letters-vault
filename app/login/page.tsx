@@ -34,7 +34,8 @@ export default function LoginPage() {
     <div className="login-bg-container">
       <form
         onSubmit={handleSubmit}
-        className="text-neutral-800 py-6 relative overflow-hidden flex flex-col justify-around w-96 h-44 border border-neutral-500 rounded-lg bg-neutral-50 p-3 px-6 shadow-lg top-60"
+        className="text-neutral-800 py-10 relative overflow-hidden flex flex-col justify-around w-96 h-44 border border-neutral-500 rounded-lg bg-neutral-50 px-[7px] shadow-lg top-60"
+        style={{ padding: '15px' }}
       >
         {/* Decorative elements */}
         <div className="before:absolute before:w-32 before:h-20 before:right-2 before:bg-red-300 before:-z-10 before:rounded-full before:blur-xl before:-top-12 z-10 after:absolute after:w-24 after:h-24 after:bg-red-300 after:-z-10 after:rounded-full after:blur after:-top-12 after:-right-6">

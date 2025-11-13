@@ -260,7 +260,7 @@ export default function VaultPage() {
               </div>
               <div 
                 className="cursor-pointer transition-all duration-300 hover:scale-110"
-                onClick={() => router.push('/letter/talk')}
+                onClick={() => alert('yet to cook')}
               >
                 <img
                   src="https://res.cloudinary.com/dbsqtk1r7/image/upload/v1762963312/talk_rn5xsj.png"
@@ -286,7 +286,7 @@ export default function VaultPage() {
               </div>
               <div 
                 className="cursor-pointer transition-all duration-300 hover:scale-110"
-                onClick={() => router.push('/letter/low')}
+                onClick={() => alert('yet to cook')}
               >
                 <img
                   src="https://res.cloudinary.com/dbsqtk1r7/image/upload/v1762963312/lowtired_vya0v4.png"
